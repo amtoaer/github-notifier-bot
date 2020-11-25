@@ -27,7 +27,7 @@ app = Flask(__name__)
 
 
 @app.before_request
-async def verification():
+def verification():
     data = request.get_data()
     try:
         if config['security']:
@@ -41,7 +41,7 @@ async def verification():
 
 
 @app.route('/webhook', methods=['POST'])
-async def handleWebhook():
+def handleWebhook():
     payload = request.get_data()
     try:
         targets = config["mapper"][payload["repository"]["full_name"]]
