@@ -42,7 +42,7 @@ def verification():
 
 @app.route('/webhook', methods=['POST'])
 def handleWebhook():
-    payload = request.get_data()
+    payload = request.get_json()
     try:
         targets = config["mapper"][payload["repository"]["full_name"]]
         tasks = []
