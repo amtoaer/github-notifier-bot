@@ -1,0 +1,16 @@
+{
+  "session": {
+    "host": "http://localhost:8080",
+    "authKey": "your authKey",
+    "account": 123456,
+    "websocket": true
+  },
+  "security": true,
+  "token": "amtoaer",
+  "mapper": {
+    "amtoaer/java-drawing-board": {
+      "groups": [],
+      "friends": [1361974998]
+    }
+  }
+}
