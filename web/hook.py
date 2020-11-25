@@ -56,3 +56,5 @@ async def handleWebhook():
         loop.run_until_complete(asyncio.wait(tasks))
     except:
         print('invalid post, ignored.\n')
+    finally:
+        return 'ok'
