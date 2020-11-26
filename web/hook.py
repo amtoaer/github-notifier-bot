@@ -7,6 +7,7 @@ from config.config import config
 from utils.utils import Utils
 import asyncio
 from graia.application import GraiaMiraiApplication, Session
+from thread.loop import event_loop
 
 session_info = config['session']
 
@@ -53,7 +54,7 @@ def handleWebhook():
             tasks.append(mirai.sendGroupMessage(group, message_chain))
         for friend in targets['friends']:
             tasks.append(mirai.sendFriendMessage(friend, message_chain))
-        loop.run_until_complete(asyncio.wait(tasks))
+        event_loop.run_tasks(asyncio.wait(tasks))
     except:
         print('invalid post, ignored.\n')
     finally:
