@@ -5,6 +5,7 @@
     "account": 123456,
     "websocket": true
   },
+  "port": 13579,
   "security": true,
   "token": "amtoaer",
   "mapper": {
