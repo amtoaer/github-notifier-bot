@@ -1,3 +1,4 @@
+from aiohttp.client import ClientSession
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from flask import Flask
@@ -16,7 +17,8 @@ mirai = GraiaMiraiApplication(
         host=session_info['host'],
         authKey=session_info['authKey'],
         account=session_info['account'],
-        websocket=session_info['websocket'])
+        websocket=session_info['websocket']),
+    session=ClientSession()
 )
 
 
