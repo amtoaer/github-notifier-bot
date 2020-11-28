@@ -1,24 +1,27 @@
-from aiohttp.client import ClientSession
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from flask import Flask
 from flask import request, abort
+from graia.broadcast import Broadcast
 from config.config import config
 from utils.utils import Utils
 import asyncio
 from graia.application import GraiaMiraiApplication, Session
 from thread.loop import event_loop
 
+loop = asyncio.get_event_loop()
+
+bcc = Broadcast(loop)
+
 session_info = config['session']
 
 mirai = GraiaMiraiApplication(
-    broadcast=None,
+    broadcast=bcc,
     connect_info=Session(
         host=session_info['host'],
         authKey=session_info['authKey'],
         account=session_info['account'],
         websocket=session_info['websocket']),
-    session=ClientSession()
 )
 
 
