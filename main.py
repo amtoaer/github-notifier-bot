@@ -1,5 +1,7 @@
 from web.hook import app
 from config.config import config
+from gevent import pywsgi
 
 # 开始运行
-app.run(host='127.0.0.1', port=config['port'])
+server = pywsgi.WSGIServer(('127.0.0.1', config['port']), app)
+server.serve_forever()
