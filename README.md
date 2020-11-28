@@ -42,11 +42,7 @@
 
 ## 行为
 
-机器人使用`flask`框架监听`http://localhost:${port}/webhook`，在收到 Post 请求后，如果`security`选项为 true，该机器人会使用`token`选项加密 `payload` 并与请求头中的 sha256 值进行对比校验。校验通过后，取到 `payload` 内的有用内容生成信息，使用`payload`内的仓库信息进行`mapper`映射，得到需要发送的群组和好友列表，对其进行遍历生成协程列表，通过主线程中的事件循环执行。
-
-## 不足
-
-在当前版本，所有的发送信息函数都使用主线程的事件循环（`loop.run_until_complete`）执行，在需发送信息过多、请求过于频繁的情况下可能会造成阻塞。
+机器人会使用一个单独线程运行事件循环并使用`flask`框架监听`http://localhost:${port}/webhook`，在收到 Post 请求后，如果`security`选项为 true，该机器人会使用`token`选项加密 `payload` 并与请求头中的 sha256 值进行对比校验。校验通过后，取到 `payload` 内的有用内容生成信息，使用`payload`内的仓库信息进行`mapper`映射，得到需要发送的群组和好友列表，对其进行遍历生成协程列表，最后将协程列表发送给事件循环执行。
 
 ## 许可证
 
