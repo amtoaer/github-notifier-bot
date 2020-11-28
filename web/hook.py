@@ -1,4 +1,3 @@
-from graia.broadcast import Broadcast
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from flask import Flask
@@ -11,18 +10,24 @@ from thread.loop import event_loop
 
 session_info = config['session']
 
-loop = asyncio.get_event_loop()
-
-bcc = Broadcast(loop=loop)
-
 mirai = GraiaMiraiApplication(
-    broadcast=bcc,
+    broadcast=None,
     connect_info=Session(
         host=session_info['host'],
         authKey=session_info['authKey'],
         account=session_info['account'],
         websocket=session_info['websocket'])
 )
+
+
+async def authorization():
+    '''启动认证'''
+    await mirai.authenticate()
+    await mirai.activeSession()
+
+# 完成认证
+event_loop.run_coroutine_threadsafe(authorization())
+
 
 app = Flask(__name__)
 
@@ -50,11 +55,13 @@ def handleWebhook():
         message_chain = MessageChain.create((
             Plain(Utils.generate_message(payload)),
         ))
+        # 将所有发送任务添加到列表
         for group in targets['groups']:
             tasks.append(mirai.sendGroupMessage(group, message_chain))
         for friend in targets['friends']:
             tasks.append(mirai.sendFriendMessage(friend, message_chain))
-        event_loop.run_tasks(asyncio.wait(tasks))
+        # 交给事件循环执行
+        event_loop.run_coroutine_threadsafe(asyncio.wait(tasks))
     except:
         print('invalid post, ignored.\n')
     finally:

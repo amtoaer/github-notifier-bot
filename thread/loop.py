@@ -16,7 +16,7 @@ class EventLoop(threading.Thread):
             self.loop.close()
             asyncio.set_event_loop(None)
 
-    def run_tasks(self, coro):
+    def run_coroutine_threadsafe(self, coro):
         asyncio.run_coroutine_threadsafe(coro, self.loop)
 
 
